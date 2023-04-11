@@ -69,7 +69,7 @@ function wait_for_confirmation() {
 function shred_dir {
 	for file in "$1"/*; do
 		if [[ -f "$file" ]]; then
-			scrub -p dod $file && shred -zun 10 -v "$file"
+			scrub -p dod "$file" && shred -zun 10 -v "$file"
 		elif [[ -d "$file" ]]; then
 			shred_dir "$file"
 		fi
@@ -78,12 +78,27 @@ function shred_dir {
 
 # Main function
 
+continue=False
+
+while getopts ":yd:" arg; do
+	case $arg in
+	d) directory=$OPTARG ;;
+	y) continue=True ;;
+	?)
+		echo -e "${wrong}[!]${nc}Invalid option: -$OPTARG\n"
+		help_panel
+		;;
+	esac
+done
+
 function main() {
 	if [ -d "$1" ]; then
 		echo -e "${sign_warn} ${warn} All the files and directorys on $1 will be deleted.${nc}"
 		echo -e "${sign_cmd} ${cmd} ls: $(ls -la)\n${nc}"
 		echo -e "${sign_ask} Do you want to continue?${nc}"
-		wait_for_confirmation
+		if [ $continue = False ]; then
+			wait_for_confirmation
+		fi
 		shred_dir "$1"
 		echo -e "${sign_info} ${info} All the files where deleted securely. Deleting empty directorys${nc}"
 		rm -rfv *
@@ -96,5 +111,5 @@ function main() {
 # Script starts here
 
 start_script
-main $1
+main "$directory"
 exit_script
