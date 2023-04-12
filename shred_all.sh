@@ -93,16 +93,16 @@ done
 
 function main() {
 	if [ -d "$1" ]; then
-		echo -e "${sign_warn} ${warn} All the files and directorys on $1 will be deleted.${nc}"
-		echo -e "${sign_cmd} ${cmd} ls: $(ls -la)\n${nc}"
-		echo -e "${sign_ask} Do you want to continue?${nc}"
+		echo -e "${sign_warn} ${warn}All the files and directorys on $1 will be deleted.${nc}"
+		echo -e "${sign_cmd} ${cmd}ls: $(ls -la)\n${nc}"
+		echo -e "${sign_ask} ${ask}Do you want to continue?${nc}"
 		if [ $continue = False ]; then
 			wait_for_confirmation
 		fi
 		shred_dir "$1"
-		echo -e "${sign_info} ${info} All the files where deleted securely. Deleting empty directorys${nc}"
-		rm -rfv *
-		echo -e "${sign_good} ${good} All the directorys on $1 where deleted.${nc}"
+		echo -e "${sign_info} ${info}All the files where deleted securely. Deleting empty directorys${nc}"
+		rm -rfv "$1"
+		echo -e "${sign_good} ${good}All the directorys on $1 where deleted.${nc}"
 	else
 		echo -e "${sign_wrong} ${wrong}Please provide a valid directory path as an argument.${nc}"
 	fi
