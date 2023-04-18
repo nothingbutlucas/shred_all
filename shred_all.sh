@@ -53,8 +53,8 @@ function start_script() {
 }
 
 function help_panel() {
-	echo -e "Usage: ${good}$0 ${info}"
-	echo -e "\n\t${cmd}Example: $0${nc}"
+	echo -e "Usage: ${good}$0 -d DIRECTORY${info}"
+	echo -e "\n\t${cmd}Example: $0 -d $HOME/Downloads/${nc}"
 
 	exit_script
 }
@@ -94,7 +94,7 @@ done
 function main() {
 	if [ -d "$1" ]; then
 		echo -e "${sign_warn} ${warn}All the files and directorys on $1 will be deleted.${nc}"
-		echo -e "${sign_cmd} ${cmd}ls: $(ls -la)\n${nc}"
+		echo -e "${sign_cmd} ${cmd}ls: $(ls -la $1)\n${nc}"
 		echo -e "${sign_ask} ${ask}Do you want to continue?${nc}"
 		if [ $continue = False ]; then
 			wait_for_confirmation
@@ -105,6 +105,7 @@ function main() {
 		echo -e "${sign_good} ${good}All the directorys on $1 where deleted.${nc}"
 	else
 		echo -e "${sign_wrong} ${wrong}Please provide a valid directory path as an argument.${nc}"
+		help_panel
 	fi
 }
 
